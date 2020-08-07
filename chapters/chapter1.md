@@ -1,5 +1,5 @@
 ---
-title: 'Chapter 1: Getting started'
+title: 'Chapter 1: The beginning! '
 description:
   'This chapter will teach you about many cool things and introduce you to the
   most important concepts of the course.'
@@ -21,19 +21,19 @@ id: 1
 Let's ask some questions about the slides. Whats the correct answer?
 
 <choice>
-<opt text="Answer one">
+<opt text="Elephant">
 
 This is not the correct answer.
 
 </opt>
 
-<opt text="Answer two" correct="true">
+<opt text="Answer Mouse" correct="true">
 
 Good job!
 
 </opt>
 
-<opt text="Answer three">
+<opt text="Answer Cat">
 
 This is not correct either.
 
