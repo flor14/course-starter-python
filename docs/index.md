@@ -669,7 +669,7 @@ sys.path.insert(0, 'exercises/')
 ```
 you can then import as normal. 
 
-#### `binder/requirements.txt`
+### `binder/requirements.txt`
 
 Remember back in `meta.json` we discussed the argument `juniper.branch` briefly? Code block exercises are where this comes to play. 
 
