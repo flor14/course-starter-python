@@ -678,6 +678,11 @@ Any imported packages need to be added to `binder/requirements.txt` and since we
 - Build your [binder](https://mybinder.org/) and refer to [Ines's explanation](https://github.com/ines/spacy-course#setting-up-binder) for more. 
     - ⚠️ When you build your binder make sure you specify `Git branch, tag, or commit` as `binder` since that is the branch where you will be adjusting the `requirements.txt`.
 
+### New Framework Issues - Binder 
+
+Since the writing of this documentation, Ines has edited her Spacy course to include video support. In this new version that is used in [https://prog-learn.mds.ubc.ca/](https://prog-learn.mds.ubc.ca/en/module2), changes to the way we connect with the docker container and binder hub have been made. There is no
+`requirements.txt` file and instead we add any libraries or extension to the `Dockerfile` located in the `binder` folder. In addition, If you are connecting to a private binder, when developing locally, set `useStorage: false` on L27 of the  `juniper.js` file located in the `src/components` directory. 
+
 
 ### `static` folder 
 
@@ -705,4 +710,3 @@ ex:
         └── video_n.mp4
 ```
 The required images are all specified in Ines' documentation in her [`README.md` here](https://github.com/UBC-MDS/course-starter-python#static-assets).
-
