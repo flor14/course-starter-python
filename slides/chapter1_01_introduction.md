@@ -9,7 +9,31 @@ speaker notes on the side. Slides can be separated with a divider: ---.
 
 ---
 
-# This is a slide specifically the first one!
+# Video 
+
+
+
+<html>
+<video style="display:block; margin: 0 auto;" width="100%" height="auto" controls >
+  <source src="gif-as-mp4.mp4" type="video/mp4">
+Your browser does not support the video tag.
+</video></html>
+
+
+---
+# Video 
+
+Audio:
+
+<html>
+<audio controls >
+  <source src="audio-file-name.mp3" />
+</audio></html>
+
+
+---
+
+# This is a slide specifically the second one!
 
 ```python
 # Print something

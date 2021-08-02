@@ -17,13 +17,11 @@ export default ({ data }) => {
     return (
         <Layout isHome>
    <Logo className={classes.logo} aria-label={siteMetadata.title} /> # HERE
-            {chapters.map(({ slug, title, description }) => (
-
             <section>
-                <h1 className={classes.subtitle}> INSERT CATCHY TAG LINE HERE </h1>
+                <h1 className={classes.subtitle}> I modified this </h1>
                 <div className={classes.introduction}>
                 <p>
-                    This is a good place to write what your course is about!  Dinosaurs? Neural Networks? LSTM? How to do taxes and not get bored? Write it here!   
+                    This course is about Data Science 
                 </p>
                 </div>
             </section>
