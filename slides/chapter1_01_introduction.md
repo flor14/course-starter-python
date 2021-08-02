@@ -11,23 +11,23 @@ speaker notes on the side. Slides can be separated with a divider: ---.
 
 # Video 
 
-
+Press the image
 
 <html>
-<video style="display:block; margin: 0 auto;" width="100%" height="auto" controls >
+<video style="display:block; margin: 0 auto;" width="50%" height="auto" controls >
   <source src="gif-as-mp4.mp4" type="video/mp4">
 Your browser does not support the video tag.
 </video></html>
 
 
 ---
-# Video 
+# Audio 
 
 Audio:
 
 <html>
 <audio controls >
-  <source src="audio-file-name.mp3" />
+  <source src="invalid-keypress.mp3" />
 </audio></html>
 
 
