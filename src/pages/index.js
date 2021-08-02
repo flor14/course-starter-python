@@ -16,7 +16,8 @@ export default ({ data }) => {
     }))
     return (
         <Layout isHome>
-            <Logo className={classes.logo} aria-label={siteMetadata.title} />
+   <Logo className={classes.logo} aria-label={siteMetadata.title} /> # HERE
+            {chapters.map(({ slug, title, description }) => (
 
             <section>
                 <h1 className={classes.subtitle}> INSERT CATCHY TAG LINE HERE </h1>
