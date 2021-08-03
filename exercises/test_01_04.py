@@ -5,6 +5,6 @@ def test():
     # in the meta.json for details.
 
     # If an assertion fails, the message will be displayed
-    assert 2+2 = 5 in __solution__, "Try again!"
+    assert n+1 = 7 in __solution__, "Try again!"
    
     __msg__.good("Well done!")
