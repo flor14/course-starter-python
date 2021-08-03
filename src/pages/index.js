@@ -16,7 +16,7 @@ export default ({ data }) => {
     }))
     return (
         <Layout isHome>
-   <Logo className={classes.logo} aria-label={siteMetadata.title} /> # HERE
+   <Logo className={classes.logo} aria-label={siteMetadata.title} /> 
             <section>
                 <h1 className={classes.subtitle}> I modified this </h1>
                 <div className={classes.introduction}>
