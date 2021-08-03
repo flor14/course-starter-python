@@ -59,3 +59,16 @@ This is a hint.
 </codeblock>
 
 </exercise>
+
+<exercise id="4" title="New exercise">
+
+New exercise
+
+<codeblock id="01_04">
+
+This is a new hint.
+
+</codeblock>
+
+</exercise>
+
