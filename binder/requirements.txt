@@ -1,2 +1,1 @@
-wasabi>=0.2.1,<1.1.0
-pandas==1.0.5
+bash_kernel
