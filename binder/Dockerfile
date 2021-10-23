@@ -4,7 +4,7 @@ RUN apt-get -y update
 RUN apt-get -y install git
 
 RUN bash -c "mkdir example && cd example"
-WORKDIR /example
+# WORKDIR /example
 
 RUN bash -c  "touch somefile.txt && touch other_file.txt"
 RUN bash -c  "git init"
@@ -29,3 +29,5 @@ COPY . ${HOME}
 USER root
 RUN chown -R ${NB_UID} ${HOME}
 USER ${NB_USER}
+
+WORKDIR /tmp
