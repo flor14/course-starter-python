@@ -2,6 +2,9 @@ FROM ubuntu:20.04
 
 RUN apt-get -y update
 RUN apt-get -y install git
+RUN apt-get install -y python3-pip
+RUN pip install --no-cache-dir notebook
+RUN pip install --no-cache-dir jupyterhub
 
 WORKDIR /tmp
 
@@ -9,9 +12,7 @@ RUN bash -c "mkdir example && cd example"
 RUN bash -c  "touch somefile.txt && touch other_file.txt"
 RUN bash -c  "git init"
 
-RUN apt-get install -y python3-pip
-RUN pip install --no-cache-dir notebook
-RUN pip install --no-cache-dir jupyterhub
+
 
 ARG NB_USER=jovyan
 ARG NB_UID=1000
