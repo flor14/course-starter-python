@@ -1,5 +1,10 @@
 FROM ubuntu:20.04
 
+
+RUN apt-get -y update
+RUN apt-get -y install git
+
+
 ARG NB_USER=jovyan
 ARG NB_UID=1000
 ENV USER ${NB_USER}
@@ -18,8 +23,6 @@ RUN chown -R ${NB_UID} ${HOME}
 USER ${NB_USER}
 
 
-RUN apt-get -y update
-RUN apt-get -y install git
 
 COPY ./script.sh /
 RUN ./script.sh 
