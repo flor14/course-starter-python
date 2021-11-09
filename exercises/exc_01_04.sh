@@ -1,2 +1,2 @@
-mkdie folder
+mkdir folder
 touch file.txt

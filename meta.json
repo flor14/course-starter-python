@@ -12,7 +12,7 @@
         "repo": "flor14/course-starter-python",
         "branch": "master",
         "lang": "bash",
-        "kernelType": "calysto_bash",
+        "kernelType": "bash_kernel",
         "debug": false
     },
     "showProfileImage": true,
