@@ -3,26 +3,30 @@ import { StaticQuery, graphql } from 'gatsby'
 
 import { Hint } from './hint'
 import { Button } from './button'
-
+import { ChapterContext, LocaleContext } from '../context'
 import classes from '../styles/code.module.sass'
 
-function getFiles({ allCode }) {
+function getFiles({ allCode }, lang) {
     return Object.assign(
         {},
-        ...allCode.edges.map(({ node }) => ({
-            [node.name]: node.code,
-        }))
+        ...allCode.edges
+            .filter(({ node }) => node.lang === lang)
+            .map(({ node }) => {
+                const isCommand = node.extension === 'sh'
+                const code = isCommand ? `!${node.code}` : node.code
+                return { [node.name]: { code, isCommand } }
+            })
     )
 }
 
-function makeTest(template, testFile, solution) {
-    // Escape quotation marks in the solution code, for cases where we
-    // can only place the solution in regular quotes.
-    const solutionEscaped = solution.replace(/"/g, '\\"')
-    return template
-        .replace(/\${solutionEscaped}/g, solutionEscaped)
-        .replace(/\${solution}/g, solution)
-        .replace(/\${test}/g, testFile)
+function makeTest(template, testFile, solution, isCommand) {
+    if (isCommand) {
+        // If it's a shell script and command, we don't add it to the test
+        // template for execution in Python
+        return template.replace(/\${solution}/g, solution).replace(/\${test}/g, '')
+    } else {
+        return template.replace(/\${solution}/g, solution).replace(/\${test}/g, testFile)
+    }
 }
 
 class CodeBlock extends React.Component {
@@ -66,87 +70,124 @@ class CodeBlock extends React.Component {
         const sourceId = source || `exc_${id}`
         const solutionId = solution || `solution_${id}`
         const testId = test || `test_${id}`
-        const juniperClassNames = {
-            cell: classes.cell,
-            input: classes.input,
-            button: classes.button,
-            output: classes.output,
-        }
-        const hintActions = [
-            { text: 'Show solution', onClick: () => this.handleShowSolution() },
-            { text: 'Reset', onClick: () => this.handleReset() },
-        ]
-
         return (
-            <StaticQuery
-                query={graphql`
-                    {
-                        site {
-                            siteMetadata {
-                                testTemplate
-                                juniper {
-                                    repo
-                                    branch
-                                    kernelType
-                                    lang
-                                    debug
+            <ChapterContext.Consumer>
+                {({ lang }) => (
+                    <StaticQuery
+                        query={graphql`
+                            {
+                                site {
+                                    siteMetadata {
+                                        testTemplate
+                                        juniper {
+                                            repo
+                                            branch
+                                            kernelType
+                                            debug
+                                        }
+                                    }
+                                }
+                                allCode {
+                                    edges {
+                                        node {
+                                            name
+                                            code
+                                            lang
+                                            extension
+                                        }
+                                    }
                                 }
                             }
-                        }
-                        allCode {
-                            edges {
-                                node {
-                                    name
-                                    code
-                                }
-                            }
-                        }
-                    }
-                `}
-                render={data => {
-                    const { testTemplate } = data.site.siteMetadata
-                    const { repo, branch, kernelType, debug, lang } = data.site.siteMetadata.juniper
-                    const files = getFiles(data)
-                    const sourceFile = files[sourceId]
-                    const solutionFile = files[solutionId]
-                    const testFile = files[testId]
-                    return (
-                        <div className={classes.root} key={this.state.key}>
-                            {Juniper && (
-                                <Juniper
-                                    msgButton={null}
-                                    classNames={juniperClassNames}
-                                    repo={repo}
-                                    branch={branch}
-                                    lang={lang}
-                                    kernelType={kernelType}
-                                    debug={debug}
-                                    actions={({ runCode }) => (
-                                        <>
-                                            <Button onClick={() => runCode()}>Run Code</Button>
-                                            {testFile && (
-                                                <Button
-                                                    variant="primary"
-                                                    onClick={() =>
-                                                        runCode(value =>
-                                                            makeTest(testTemplate, testFile, value)
-                                                        )
-                                                    }
+                        `}
+                        render={data => {
+                            const { testTemplate } = data.site.siteMetadata
+                            const {
+                                repo,
+                                branch,
+                                kernelType,
+                                debug,
+                            } = data.site.siteMetadata.juniper
+                            const files = getFiles(data, lang)
+                            const sourceFile = files[sourceId] && files[sourceId].code
+                            const solutionFile = files[solutionId] && files[solutionId].code
+                            const testFile = files[testId] && files[testId].code
+                            const isCommand = files[sourceId] && files[sourceId].isCommand
+                            return (
+                                <LocaleContext.Consumer>
+                                    {({ uiText }) => (
+                                        <div className={classes.root} key={this.state.key}>
+                                            {Juniper && (
+                                                <Juniper
+                                                    msgButton={null}
+                                                    msgLoading={uiText.loading}
+                                                    msgError={uiText.connectingFailed}
+                                                    msgLaunchDocker={uiText.launchingDocker}
+                                                    msgReconnectDocker={uiText.reconnectingDocker}
+                                                    classNames={{
+                                                        cell: isCommand
+                                                            ? classes.cellCmd
+                                                            : classes.cell,
+                                                        input: classes.input,
+                                                        button: classes.button,
+                                                        output: classes.output,
+                                                    }}
+                                                    lineWrapping={isCommand}
+                                                    repo={repo}
+                                                    branch={branch}
+                                                    kernelType={kernelType}
+                                                    debug={debug}
+                                                    actions={({ runCode }) => (
+                                                        <>
+                                                            <Button onClick={() => runCode()}>
+                                                                {isCommand
+                                                                    ? uiText.runCommand
+                                                                    : uiText.runCode}
+                                                            </Button>
+                                                            {testFile && (
+                                                                <Button
+                                                                    variant="primary"
+                                                                    onClick={() =>
+                                                                        runCode(value =>
+                                                                            makeTest(
+                                                                                testTemplate,
+                                                                                testFile,
+                                                                                value,
+                                                                                isCommand
+                                                                            )
+                                                                        )
+                                                                    }
+                                                                >
+                                                                    {uiText.submit}
+                                                                </Button>
+                                                            )}
+                                                        </>
+                                                    )}
                                                 >
-                                                    Submit
-                                                </Button>
+                                                    {showSolution ? solutionFile : sourceFile}
+                                                </Juniper>
                                             )}
-                                        </>
+                                            <Hint
+                                                actions={[
+                                                    {
+                                                        text: uiText.showSolution,
+                                                        onClick: () => this.handleShowSolution(),
+                                                    },
+                                                    {
+                                                        text: uiText.reset,
+                                                        onClick: () => this.handleReset(),
+                                                    },
+                                                ]}
+                                            >
+                                                {children}
+                                            </Hint>
+                                        </div>
                                     )}
-                                >
-                                    {showSolution ? solutionFile : sourceFile}
-                                </Juniper>
-                            )}
-                            <Hint actions={hintActions}>{children}</Hint>
-                        </div>
-                    )
-                }}
-            />
+                                </LocaleContext.Consumer>
+                            )
+                        }}
+                    />
+                )}
+            </ChapterContext.Consumer>
         )
     }
 }
