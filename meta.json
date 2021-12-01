@@ -11,8 +11,7 @@
     "juniper": {
         "repo": "flor14/course-starter-python",
         "branch": "master",
-        "lang": "bash",
-        "kernelType": "bash_kernel",
+        "kernelType": "python3",
         "debug": false
     },
     "showProfileImage": true,
